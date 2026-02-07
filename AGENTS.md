@@ -184,3 +184,13 @@
 - Publish: `npm publish --access public --otp="<otp>"` (run from the package dir).
 - Verify without local npmrc side effects: `npm view <pkg> version --userconfig "$(mktemp)"`.
 - Kill the tmux session after publish.
+
+## Docker 编译与部署（必须）
+
+- **必须使用 Docker 进行编译和部署**，不要使用本地的 pnpm/npm/bun 等工具。
+- 编译镜像：`docker build -t openclaw:local .`
+- 运行配置向导：`docker compose run --rm openclaw-cli onboard`
+- 启动 Gateway：`docker compose up -d openclaw-gateway`
+- 查看日志：`docker compose logs -f openclaw-gateway`
+- CLI 操作：`docker compose run --rm openclaw-cli <command>`
+- 完整部署文档参见：`docs/install/docker-complete.md`
