@@ -1,19 +1,36 @@
 services:
   openclaw-gateway:
     image: ${OPENCLAW_IMAGE:-openclaw:local}
+    user: root
+    privileged: true
+    network_mode: host
     environment:
-      HOME: /home/node
+      HOME: /root
       TERM: xterm-256color
+      # Gateway config
       OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
-      CLAUDE_AI_SESSION_KEY: ${CLAUDE_AI_SESSION_KEY}
-      CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY}
-      CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE}
+      # Model provider API keys
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      # Web search API keys
+      BOCHA_API_KEY: ${BOCHA_API_KEY:-}
+      BRAVE_API_KEY: ${BRAVE_API_KEY:-}
+      PERPLEXITY_API_KEY: ${PERPLEXITY_API_KEY:-}
+      # TTS
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
+      # Claude Web
+      CLAUDE_AI_SESSION_KEY: ${CLAUDE_AI_SESSION_KEY:-}
+      CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY:-}
+      CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE:-}
+      # Display for browser
+      DISPLAY: ":99"
     volumes:
-      - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw
-      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
-    ports:
-      - "${OPENCLAW_GATEWAY_PORT:-18789}:18789"
-      - "${OPENCLAW_BRIDGE_PORT:-18790}:18790"
+      - ${OPENCLAW_CONFIG_DIR}:/root/.openclaw
+      - ${OPENCLAW_WORKSPACE_DIR}:/root/.openclaw/workspace
+      - /tmp/.X11-unix:/tmp/.X11-unix
     init: true
     restart: unless-stopped
     command:
@@ -29,17 +46,37 @@ services:
 
   openclaw-cli:
     image: ${OPENCLAW_IMAGE:-openclaw:local}
+    user: root
+    privileged: true
+    network_mode: host
     environment:
-      HOME: /home/node
+      HOME: /root
       TERM: xterm-256color
+      # Gateway config
       OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
       BROWSER: echo
-      CLAUDE_AI_SESSION_KEY: ${CLAUDE_AI_SESSION_KEY}
-      CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY}
-      CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE}
+      # Model provider API keys
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY:-}
+      # Web search API keys
+      BOCHA_API_KEY: ${BOCHA_API_KEY:-}
+      BRAVE_API_KEY: ${BRAVE_API_KEY:-}
+      PERPLEXITY_API_KEY: ${PERPLEXITY_API_KEY:-}
+      # TTS
+      ELEVENLABS_API_KEY: ${ELEVENLABS_API_KEY:-}
+      # Claude Web
+      CLAUDE_AI_SESSION_KEY: ${CLAUDE_AI_SESSION_KEY:-}
+      CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY:-}
+      CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE:-}
+      # Display for browser
+      DISPLAY: ":99"
     volumes:
-      - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw
-      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
+      - ${OPENCLAW_CONFIG_DIR}:/root/.openclaw
+      - ${OPENCLAW_WORKSPACE_DIR}:/root/.openclaw/workspace
+      - /tmp/.X11-unix:/tmp/.X11-unix
     stdin_open: true
     tty: true
     init: true
